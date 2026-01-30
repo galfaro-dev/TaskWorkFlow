@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\CreateTask\" />
-    <Folder Include="UseCases\BlockTask\" />
-    <Folder Include="UseCases\CompleteTask\" />
-    <Folder Include="UseCases\UnBlockTask\" />
-    <Folder Include="UseCases\StartTask\" />
+    <ProjectReference Include="..\TaskWorkFlow.Domain\TaskWorkFlow.Domain.csproj" />
+    <ProjectReference Include="..\TaskWorkFlow\TaskWorkFlow.csproj" />
   </ItemGroup>
 
 </Project>
