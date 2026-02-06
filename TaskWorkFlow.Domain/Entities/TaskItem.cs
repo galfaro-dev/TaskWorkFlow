@@ -1,6 +1,7 @@
 ﻿namespace TaskWorkFlow.Domain.Entities;
 
 using TaskWorkFlow.Domain.Enums;
+using TaskWorkFlow.Domain.Exceptions;
 
 public class TaskItem
 {
@@ -30,7 +31,7 @@ public class TaskItem
     public void Start()
     {
         if (State != TaskState.Pending)
-            throw new InvalidOperationException("Only pending tasks can be started.");
+            throw new BusinessRuleException("Only pending tasks can be started.");
 
         State = TaskState.InProgress;
         UpdatedAt = DateTime.UtcNow;
@@ -39,7 +40,7 @@ public class TaskItem
     public void Complete()
     {
         if (State != TaskState.InProgress)
-            throw new InvalidOperationException("Only in-progress tasks can be completed.");
+            throw new BusinessRuleException("Only in-progress tasks can be completed.");
 
         State = TaskState.Completed;
         UpdatedAt = DateTime.UtcNow;
@@ -48,7 +49,7 @@ public class TaskItem
     public void Block()
     {
         if (State == TaskState.Completed)
-            throw new InvalidOperationException("Completed tasks cannot be blocked.");
+            throw new BusinessRuleException("Completed tasks cannot be blocked.");
 
         State = TaskState.Blocked;
         UpdatedAt = DateTime.UtcNow;
@@ -56,7 +57,7 @@ public class TaskItem
     public void Unblock()
     {
         if (State != TaskState.Blocked)
-            throw new InvalidOperationException("Only blocked tasks can be unblocked.");
+            throw new BusinessRuleException("Only blocked tasks can be unblocked.");
 
         State = TaskState.InProgress;
         UpdatedAt = DateTime.UtcNow;
