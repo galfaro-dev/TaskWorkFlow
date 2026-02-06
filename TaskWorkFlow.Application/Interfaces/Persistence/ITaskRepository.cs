@@ -1,5 +1,4 @@
-﻿
-using TaskWorkFlow.Domain.Entities;
+﻿using TaskWorkFlow.Domain.Entities;
 
 namespace TaskWorkFlow.Application.Interfaces.Persistence
 {

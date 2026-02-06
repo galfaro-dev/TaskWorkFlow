@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskWorkFlow", "TaskWorkFlo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskWorkFlow.Domain", "TaskWorkFlow.Domain\TaskWorkFlow.Domain.csproj", "{2A184A62-7673-4D4A-92E3-AECC90F802F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskWorkFlow.Application", "TaskWorkFlow.Application\TaskWorkFlow.Application.csproj", "{D2218600-B397-D2A2-4207-2A022B2E129D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2A184A62-7673-4D4A-92E3-AECC90F802F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A184A62-7673-4D4A-92E3-AECC90F802F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A184A62-7673-4D4A-92E3-AECC90F802F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2218600-B397-D2A2-4207-2A022B2E129D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2218600-B397-D2A2-4207-2A022B2E129D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2218600-B397-D2A2-4207-2A022B2E129D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2218600-B397-D2A2-4207-2A022B2E129D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

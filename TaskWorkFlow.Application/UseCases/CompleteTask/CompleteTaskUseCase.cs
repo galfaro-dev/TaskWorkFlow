@@ -1,4 +1,5 @@
 ﻿using TaskWorkFlow.Application.Interfaces.Persistence;
+using TaskWorkFlow.Domain.Exceptions;
 
 namespace TaskWorkFlow.Application.UseCases.CompleteTask
 {
@@ -16,7 +17,7 @@ namespace TaskWorkFlow.Application.UseCases.CompleteTask
             var task = await _taskRepository.GetByIdAsync(taskId);
 
             if (task is null)
-                throw new InvalidOperationException("Task not found.");
+                throw new NotFoundException("Task not found.");
 
             task.Complete();
 
