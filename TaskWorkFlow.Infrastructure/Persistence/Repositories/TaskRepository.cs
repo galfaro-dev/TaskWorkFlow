@@ -20,7 +20,7 @@ public class TaskRepository : ITaskRepository
 
     public async Task AddAsync(TaskItem task)
     {
-        _context.Tasks.Add(task);
+        await _context.Tasks.AddAsync(task);
         await _context.SaveChangesAsync();
     }
 

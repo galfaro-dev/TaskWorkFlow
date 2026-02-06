@@ -29,7 +29,10 @@ builder.Services.AddScoped<UnBlockTaskUseCase>();
 
 //DbContext
 builder.Services.AddDbContext<TaskDbContext>(options =>
-    options.UseInMemoryDatabase("TaskWorkFlowDb"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
 //swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
