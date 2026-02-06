@@ -1,5 +1,7 @@
-﻿using TaskWorkFlow.Application.Interfaces.Persistence;
+﻿using TaskWorkFlow.Application.DTOs.Tasks;
+using TaskWorkFlow.Application.Interfaces.Persistence;
 using TaskWorkFlow.Domain.Entities;
+using TaskWorkFlow.Domain.Exceptions;
 
 namespace TaskWorkFlow.Application.UseCases.GetTask;
 
@@ -12,8 +14,22 @@ public class GetTaskByIdUseCase
         _taskRepository = taskRepository;
     }
 
-    public async Task<TaskItem?> ExecuteAsync(Guid id)
+    public async Task<TaskDetailsDto?> ExecuteAsync(Guid id)
     {
-        return await _taskRepository.GetByIdAsync(id);
+        var task = await _taskRepository.GetByIdAsync(id);
+
+        if (task is null)
+            throw new NotFoundException("Task not found.");
+
+        return new TaskDetailsDto
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            State = task.State.ToString(),
+            CreatedAt = task.CreatedAt,
+            UpdatedAt = task.UpdatedAt
+        };
     }
+
 }
