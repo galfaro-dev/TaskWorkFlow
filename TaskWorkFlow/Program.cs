@@ -4,6 +4,7 @@ using TaskWorkFlow.Application.UseCases.BlockTask;
 using TaskWorkFlow.Application.UseCases.CompleteTask;
 using TaskWorkFlow.Application.UseCases.CreateTask;
 using TaskWorkFlow.Application.UseCases.GetTask;
+using TaskWorkFlow.Application.UseCases.GetTaskByState;
 using TaskWorkFlow.Application.UseCases.StartTask;
 using TaskWorkFlow.Application.UseCases.UnBlockTask;
 using TaskWorkFlow.Infrastructure.Persistence;
@@ -24,6 +25,9 @@ builder.Services.AddScoped<CompleteTaskUseCase>();
 builder.Services.AddScoped<BlockTaskUseCase>();
 //Unblock
 builder.Services.AddScoped<UnBlockTaskUseCase>();
+//GetStateByState
+builder.Services.AddScoped<GetTasksByStateUseCase>();
+
 
 
 

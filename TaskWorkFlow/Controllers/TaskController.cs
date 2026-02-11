@@ -4,8 +4,10 @@ using TaskWorkFlow.Application.UseCases.BlockTask;
 using TaskWorkFlow.Application.UseCases.CompleteTask;
 using TaskWorkFlow.Application.UseCases.CreateTask;
 using TaskWorkFlow.Application.UseCases.GetTask;
+using TaskWorkFlow.Application.UseCases.GetTaskByState;
 using TaskWorkFlow.Application.UseCases.StartTask;
 using TaskWorkFlow.Application.UseCases.UnBlockTask;
+using TaskWorkFlow.Domain.Enums;
 
 namespace TaskWorkFlow.Controllers
 {
@@ -19,6 +21,7 @@ namespace TaskWorkFlow.Controllers
         private readonly CompleteTaskUseCase _completeTaskUseCase;
         private readonly BlockTaskUseCase _blockTaskUseCase;
         private readonly UnBlockTaskUseCase _unBlockTaskUseCase;
+        private readonly GetTasksByStateUseCase _getTasksByStateUseCase;
 
 
 
@@ -27,7 +30,8 @@ namespace TaskWorkFlow.Controllers
                             StartTaskUseCase startTaskUseCase,
                             CompleteTaskUseCase completeTaskUseCase,
                             BlockTaskUseCase blockTaskUseCase,
-                            UnBlockTaskUseCase unBlockTaskUseCase)
+                            UnBlockTaskUseCase unBlockTaskUseCase,
+                            GetTasksByStateUseCase getTasksByStateUseCase)
         {
             _createTaskUseCase = createTaskUseCase;
             _getTaskByIdUseCase = getTaskByIdUseCase;
@@ -35,6 +39,7 @@ namespace TaskWorkFlow.Controllers
             _completeTaskUseCase = completeTaskUseCase;
             _blockTaskUseCase = blockTaskUseCase;
             _unBlockTaskUseCase = unBlockTaskUseCase;
+            _getTasksByStateUseCase = getTasksByStateUseCase;
         }
 
         [HttpPost]
@@ -86,6 +91,12 @@ namespace TaskWorkFlow.Controllers
         {
             await _unBlockTaskUseCase.ExecuteAsync(id);
             return NoContent();
+        }
+        [HttpGet("state/{state}")]
+        public async Task<IActionResult> GetByState(TaskState state)
+        {
+            var result = await _getTasksByStateUseCase.ExecuteAsync(state);
+            return Ok(result);
         }
 
 

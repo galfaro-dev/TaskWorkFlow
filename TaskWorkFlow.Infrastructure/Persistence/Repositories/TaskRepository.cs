@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskWorkFlow.Application.Interfaces.Persistence;
 using TaskWorkFlow.Domain.Entities;
+using TaskWorkFlow.Domain.Enums;
 
 namespace TaskWorkFlow.Infrastructure.Persistence.Repositories;
 
@@ -28,5 +29,11 @@ public class TaskRepository : ITaskRepository
     {
         _context.Tasks.Update(task);
         await _context.SaveChangesAsync();
+    }
+    public async Task<IReadOnlyList<TaskItem>> GetByStateAsync(TaskState state)
+    {
+        return await _context.Tasks
+            .Where(t => t.State == state)
+            .ToListAsync();
     }
 }
