@@ -43,6 +43,14 @@ public class ExceptionHandlingMiddleware
                 ex.Message
             );
         }
+        catch (ArgumentException ex)
+        {
+            await HandleExceptionAsync(
+                context,
+                HttpStatusCode.BadRequest,
+                ex.Message
+            );
+        }
         catch (Exception)
         {
             await HandleExceptionAsync(

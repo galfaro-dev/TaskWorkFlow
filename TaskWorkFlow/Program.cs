@@ -3,8 +3,10 @@ using TaskWorkFlow.Application.Interfaces.Persistence;
 using TaskWorkFlow.Application.UseCases.BlockTask;
 using TaskWorkFlow.Application.UseCases.CompleteTask;
 using TaskWorkFlow.Application.UseCases.CreateTask;
+using TaskWorkFlow.Application.UseCases.GetAllTasks;
 using TaskWorkFlow.Application.UseCases.GetTask;
 using TaskWorkFlow.Application.UseCases.GetTaskByState;
+using TaskWorkFlow.Application.UseCases.GetTasksPaged;
 using TaskWorkFlow.Application.UseCases.StartTask;
 using TaskWorkFlow.Application.UseCases.UnBlockTask;
 using TaskWorkFlow.Infrastructure.Persistence;
@@ -27,6 +29,14 @@ builder.Services.AddScoped<BlockTaskUseCase>();
 builder.Services.AddScoped<UnBlockTaskUseCase>();
 //GetStateByState
 builder.Services.AddScoped<GetTasksByStateUseCase>();
+//GetAllTasks
+builder.Services.AddScoped<GetAllTasksUseCase>();
+//GetPagination
+builder.Services.AddScoped<GetTasksPagedUseCase>();
+
+
+
+
 
 
 

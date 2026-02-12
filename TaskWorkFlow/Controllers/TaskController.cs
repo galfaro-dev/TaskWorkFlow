@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using TaskWorkFlow.Application.UseCases.BlockTask;
 using TaskWorkFlow.Application.UseCases.CompleteTask;
 using TaskWorkFlow.Application.UseCases.CreateTask;
+using TaskWorkFlow.Application.UseCases.GetAllTasks;
 using TaskWorkFlow.Application.UseCases.GetTask;
 using TaskWorkFlow.Application.UseCases.GetTaskByState;
+using TaskWorkFlow.Application.UseCases.GetTasksPaged;
 using TaskWorkFlow.Application.UseCases.StartTask;
 using TaskWorkFlow.Application.UseCases.UnBlockTask;
 using TaskWorkFlow.Domain.Enums;
@@ -22,8 +24,8 @@ namespace TaskWorkFlow.Controllers
         private readonly BlockTaskUseCase _blockTaskUseCase;
         private readonly UnBlockTaskUseCase _unBlockTaskUseCase;
         private readonly GetTasksByStateUseCase _getTasksByStateUseCase;
-
-
+        private readonly GetAllTasksUseCase _getAllTasksUseCase;
+        private readonly GetTasksPagedUseCase _getTasksPageUseCase;
 
         public TaskController(CreateTaskUseCase createTaskUseCase,
                             GetTaskByIdUseCase getTaskByIdUseCase,
@@ -31,7 +33,9 @@ namespace TaskWorkFlow.Controllers
                             CompleteTaskUseCase completeTaskUseCase,
                             BlockTaskUseCase blockTaskUseCase,
                             UnBlockTaskUseCase unBlockTaskUseCase,
-                            GetTasksByStateUseCase getTasksByStateUseCase)
+                            GetTasksByStateUseCase getTasksByStateUseCase,
+                            GetAllTasksUseCase getAllTasksUseCase,
+                            GetTasksPagedUseCase getTasksPagedUseCase)
         {
             _createTaskUseCase = createTaskUseCase;
             _getTaskByIdUseCase = getTaskByIdUseCase;
@@ -40,6 +44,8 @@ namespace TaskWorkFlow.Controllers
             _blockTaskUseCase = blockTaskUseCase;
             _unBlockTaskUseCase = unBlockTaskUseCase;
             _getTasksByStateUseCase = getTasksByStateUseCase;
+            _getAllTasksUseCase = getAllTasksUseCase;
+            _getTasksPageUseCase = getTasksPagedUseCase;
         }
 
         [HttpPost]
@@ -98,6 +104,21 @@ namespace TaskWorkFlow.Controllers
             var result = await _getTasksByStateUseCase.ExecuteAsync(state);
             return Ok(result);
         }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll([FromQuery] TaskState? state,[FromQuery] string? title)
+        {
+            var result = await _getAllTasksUseCase.ExecuteAsync(state, title);
+            return Ok(result);
+        }
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10)
+        {
+            var result = await _getTasksPageUseCase
+                .ExecuteAsync(pageNumber, pageSize);
+
+            return Ok(result);
+        }
+
 
 
 

@@ -36,4 +36,32 @@ public class TaskRepository : ITaskRepository
             .Where(t => t.State == state)
             .ToListAsync();
     }
+    public async Task<IReadOnlyList<TaskItem>> GetAllAsync(TaskState? state,string? title)
+    {
+        var query = _context.Tasks.AsQueryable();
+
+        if (state.HasValue)
+            query = query.Where(t => t.State == state.Value);
+
+        if (!string.IsNullOrWhiteSpace(title))
+            query = query.Where(t => t.Title.Contains(title));
+
+        return await query.ToListAsync();
+    }
+    public async Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber,int pageSize)
+    {
+        var query = _context.Tasks.AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(t => t.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
+
 }
