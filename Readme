@@ -29,6 +29,8 @@ SQL Server
 
 |----------- Architecture ----------------|
 
+![Architecture Diagram](TaskWorkflow.Domain/Assets/Diagram.png)
+
 The solution is structured into four layers:
 
 -Domain → Entities, business rules, exceptions
@@ -40,7 +42,6 @@ The solution is structured into four layers:
 -API → Controllers, middleware, Swagger
 
 This separation ensures maintainability, testability, and scalability.
-
 
 |-------- Business Rules-------------------|
 
