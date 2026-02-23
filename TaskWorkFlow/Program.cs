@@ -34,11 +34,16 @@ builder.Services.AddScoped<GetAllTasksUseCase>();
 //GetPagination
 builder.Services.AddScoped<GetTasksPagedUseCase>();
 
-
-
-
-
-
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 //DbContext
@@ -68,7 +73,7 @@ if (app.Environment.IsDevelopment())
 //Middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Configure the HTTP request pipeline.
+app.UseCors("AngularApp");
 
 app.UseHttpsRedirection();
 
