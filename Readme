@@ -1,0 +1,160 @@
+Task Management API – ASP.NET Core
+
+REST API built with ASP.NET Core following Clean Architecture principles.
+The project models business rules inside the Domain layer and separates responsibilities across API, Application, Infrastructure, and Domain.
+
+
+
+----Technologies
+
+-ASP.NET Core Web API
+
+-C#
+
+-Entity Framework Core
+
+-SQL Server
+
+-Clean Architecture
+
+-FluentValidation
+
+-xUnit + Moq (Unit Testing)
+
+|------------Prerequisites-------|
+
+.NET 8.0 SDK 
+
+SQL Server
+
+|----------- Architecture ----------------|
+
+![Architecture Diagram](TaskWorkflow.Domain/Assets/Diagram.png)
+
+The solution is structured into four layers:
+
+-Domain → Entities, business rules, exceptions
+
+-Application → UseCases, DTOs, validation
+
+-Infrastructure → EF Core, repositories, SQL Server
+
+-API → Controllers, middleware, Swagger
+
+This separation ensures maintainability, testability, and scalability.
+
+|-------- Business Rules-------------------|
+
+Tasks follow a strict lifecycle:
+
+-Pending
+
+-InProgress
+
+-Completed
+
+-Blocked
+
+Rules enforced in the Domain:
+
+A task can only start if it is Pending.
+
+A task can only complete if it is InProgress.
+
+Invalid transitions throw domain exceptions.
+
+|--------- Features------------|
+Commands
+
+-Create Task
+
+-Start Task
+
+-Complete Task
+
+-Block / Unblock Task
+
+-Queries
+
+-Get Task by Id
+
+-Get Tasks by State
+
+-Get All Tasks (optional filters)
+
+-Get Tasks with Pagination
+
+|----------Filtering & Pagination--------|
+
+Optional filters:
+
+-GET /api/task?state=InProgress&title=api
+
+
+Pagination (database-level using Skip/Take):
+
+-GET /api/task/paged?pageNumber=1&pageSize=10
+
+
+Efficient queries are executed directly in SQL Server.
+
+|-------Validation--------|
+
+Validation handled in Application layer using FluentValidation:
+
+Title required (max 200 characters)
+
+Description max 1000 characters
+
+PageNumber > 0
+
+PageSize within allowed limits
+
+|----------Exception Handling--------|
+
+Global middleware maps exceptions to proper HTTP status codes:
+
+-400 → Invalid input
+
+-404 → Not found
+
+-409 → Business rule violation
+
+-500 → Unexpected error
+
+|--------------Testing----------|
+
+-Unit tests implemented using xUnit and Moq.
+
+-Domain Tests
+
+-State transitions (Start, Complete, Block, Unblock)
+
+-Business rule validation
+
+-Application Tests
+
+-UseCase behavior
+
+-DTO mapping
+
+-Pagination calculation
+
+-Validator behavior
+
+|-----------Running the Project--------|
+
+Configure connection string in appsettings.json
+
+-Run migrations:
+
+-dotnet ef database update
+
+-Start the API:
+
+-dotnet run
+
+
+Access Swagger:
+
+https://localhost:{port}/swagger
