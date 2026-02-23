@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskWorkFlow.Application", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskWorkFlow.Infrastructure", "TaskWorkFlow.Infrastructure\TaskWorkFlow.Infrastructure.csproj", "{B57C5381-52F5-3D65-4685-AFBD02413194}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskWorkFlow.Client", "TaskWorkFlow.Client\TaskWorkFlow.Client.csproj", "{53FF5DF5-7711-FBEB-DFBA-4003AAA4E39C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B57C5381-52F5-3D65-4685-AFBD02413194}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B57C5381-52F5-3D65-4685-AFBD02413194}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B57C5381-52F5-3D65-4685-AFBD02413194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53FF5DF5-7711-FBEB-DFBA-4003AAA4E39C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53FF5DF5-7711-FBEB-DFBA-4003AAA4E39C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53FF5DF5-7711-FBEB-DFBA-4003AAA4E39C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53FF5DF5-7711-FBEB-DFBA-4003AAA4E39C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
