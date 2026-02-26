@@ -1,24 +1,55 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core'; // Añadido signal
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../../data/Services/task.service';
 import { TaskState } from '../../../data/Models/task.model';
 
 @Component({
   selector: 'app-task-list',
+  standalone: true, // Asegúrate de tener esto si usas imports directos
   imports: [CommonModule],
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss',
 })
 export class TaskList implements OnInit {
-private taskService = inject(TaskService);
+  private taskService = inject(TaskService);
+  
+  // Signals para la UI
   tasks = this.taskService.tasks;
   TaskState = TaskState;
 
+  // --- NUEVAS VARIABLES DE PAGINACIÓN ---
+  currentPage = signal(1);
+  totalPages = signal(0);
+  totalCount = signal(0);
+  pageSize = 5; 
+
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe();
+    // Al iniciar, cargamos la página 1 en lugar de todas
+    this.loadPage(1);
   }
+
+  // --- NUEVOS MÉTODOS DE PAGINACIÓN ---
+  loadPage(page: number): void {
+    if (page < 1 || (this.totalPages() > 0 && page > this.totalPages())) return;
+
+    this.taskService.getTasksPaged(page, this.pageSize).subscribe(res => {
+      this.currentPage.set(res.pageNumber);
+      this.totalPages.set(res.totalPages);
+      this.totalCount.set(res.totalCount);
+    });
+  }
+
+  nextPage() {
+    this.loadPage(this.currentPage() + 1);
+  }
+
+  prevPage() {
+    this.loadPage(this.currentPage() - 1);
+  }
+
+  // --- TUS MÉTODOS EXISTENTES (MANTENIDOS) ---
   loadAll() {
-    this.taskService.getTasks().subscribe();
+    this.loadPage(1); // Mejor usar la paginación empezando en 1
   }
 
   filterBy(state: number) {
@@ -29,10 +60,8 @@ private taskService = inject(TaskService);
     return TaskState[state] || 'Unknown';
   }
 
-  // Handlers para los botones del HTML
   onStartTask(id: string) { this.taskService.start(id).subscribe(); }
   onCompleteTask(id: string) { this.taskService.complete(id).subscribe(); }
   onBlockTask(id: string) { this.taskService.block(id).subscribe(); }
   onUnblockTask(id: string) { this.taskService.unblock(id).subscribe(); }
-
 }

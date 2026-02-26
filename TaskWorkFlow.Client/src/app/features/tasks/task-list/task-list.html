@@ -1,5 +1,6 @@
 <div class="container">
   <h2>📋 Mis Tareas</h2>
+  
   <div class="toolbar">
     <div class="filter-container">
       <button class="btn-filter" (click)="loadAll()">Todas</button>
@@ -8,8 +9,8 @@
       <button class="btn-filter completed" (click)="filterBy(4)">Completadas</button>
       <button class="btn-filter blocked" (click)="filterBy(3)">Bloqueadas</button>
     </div>
-  
-</div>
+  </div>
+
   <table class="task-table">
     <thead>
       <tr>
@@ -58,4 +59,30 @@
       }
     </tbody>
   </table>
+
+  <div class="pagination-container">
+    <div class="pagination-info">
+      Mostrando {{ tasks().length }} de {{ totalCount() }} tareas
+    </div>
+
+    <div class="pagination-actions">
+      <button 
+        class="btn-nav" 
+        (click)="prevPage()" 
+        [disabled]="currentPage() === 1">
+        &laquo; Anterior
+      </button>
+
+      <span class="page-number">
+        Página <strong>{{ currentPage() }}</strong> de {{ totalPages() }}
+      </span>
+
+      <button 
+        class="btn-nav" 
+        (click)="nextPage()" 
+        [disabled]="currentPage() >= totalPages()">
+        Siguiente &raquo;
+      </button>
+    </div>
+  </div>
 </div>

@@ -34,9 +34,11 @@ public class TaskRepository : ITaskRepository
     {
         return await _context.Tasks
             .Where(t => t.State == state)
+            .OrderByDescending(t => t.CreatedAt) 
             .ToListAsync();
     }
-    public async Task<IReadOnlyList<TaskItem>> GetAllAsync(TaskState? state,string? title)
+
+    public async Task<IReadOnlyList<TaskItem>> GetAllAsync(TaskState? state, string? title)
     {
         var query = _context.Tasks.AsQueryable();
 
@@ -46,16 +48,19 @@ public class TaskRepository : ITaskRepository
         if (!string.IsNullOrWhiteSpace(title))
             query = query.Where(t => t.Title.Contains(title));
 
-        return await query.ToListAsync();
+        return await query
+            .OrderByDescending(t => t.CreatedAt) 
+            .ToListAsync();
     }
-    public async Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber,int pageSize)
+
+    public async Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
     {
-        var query = _context.Tasks.AsQueryable();
+        var query = _context.Tasks.AsNoTracking(); 
 
         var totalCount = await query.CountAsync();
 
         var items = await query
-            .OrderBy(t => t.CreatedAt)
+            .OrderByDescending(t => t.CreatedAt) 
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();

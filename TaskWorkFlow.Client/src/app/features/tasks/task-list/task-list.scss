@@ -90,4 +90,81 @@
   &.pending.active { background: #fdcb6e; color: #000; border-color: #fdcb6e; }
   &.progress.active { background: #0984e3; color: #fff; border-color: #0984e3; }
   &.completed.active { background: #00b894; color: #fff; border-color: #00b894; }
+  /* task-list.scss */
+.container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor de la Paginación */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+
+  .pagination-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .pagination-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .btn-nav {
+      padding: 0.5rem 1rem;
+      border: 1px solid #007bff;
+      background-color: #fff;
+      color: #007bff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+
+      &:hover:not(:disabled) {
+        background-color: #007bff;
+        color: white;
+      }
+
+      &:disabled {
+        border-color: #ccc;
+        color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+
+    .page-number {
+      font-size: 0.95rem;
+      color: #333;
+    }
+  }
+}
+
+/* Estilos extra para tu tabla si los necesitas */
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  
+  th {
+    background-color: #f4f6f9;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+}
 }

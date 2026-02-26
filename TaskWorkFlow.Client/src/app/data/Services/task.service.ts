@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TaskResponseDto, TaskState } from '../Models/task.model';
 import { Observable, tap } from 'rxjs';
+import { PagedResultDto } from '../Models/paged-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,18 @@ export class TaskService {
     })
   );
 }
+// --- Paginacion ---
+  getTasksPaged(pageNumber: number, pageSize: number): Observable<PagedResultDto<TaskResponseDto>> {
+  // Construye la URL con los parámetros que espera tu Backend
+  const url = `${this.apiUrl}/paged?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+  return this.http.get<PagedResultDto<TaskResponseDto>>(url).pipe(
+    tap(response => {
+      // Seteamos el signal #tasks con los items de la página actual
+      this.#tasks.set(response.items);
+    })
+  );
+  }
 
   // --- CAMBIOS DE ESTADO (REGLAS DE DOMINIO) ---
 
