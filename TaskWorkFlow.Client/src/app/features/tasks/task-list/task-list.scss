@@ -1,0 +1,93 @@
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  th { background-color: #512bd4; color: white; }
+
+  .desc { font-size: 0.85rem; color: #666; margin: 0; }
+
+  .badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    &.state-1 { background: #fdcb6e; color: #000; } // Pending
+    &.state-2 { background: #0984e3; color: #fff; } // InProgress
+    &.state-4 { background: #00b894; color: #fff; } // Completed
+  }
+}
+// src/app/features/tasks/task-list/task-list.component.scss
+
+.task-table {
+  // ... (tus estilos anteriores)
+  
+  td {
+    strong {
+      display: block;
+      color: #2d3436;
+      font-size: 1.1rem;
+    }
+    
+    .desc {
+      margin-top: 4px;
+      color: #636e72;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+  }
+}
+.toolbar {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.filter-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .filter-label {
+    font-weight: 600;
+    color: #636e72;
+    margin-right: 10px;
+  }
+}
+
+.btn-filter {
+  padding: 8px 16px;
+  border: 1px solid #dfe6e9;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+
+  &:hover { background: #f1f2f6; }
+  
+  &.active {
+    background: #512bd4;
+    color: white;
+    border-color: #512bd4;
+  }
+
+  &.pending.active { background: #fdcb6e; color: #000; border-color: #fdcb6e; }
+  &.progress.active { background: #0984e3; color: #fff; border-color: #0984e3; }
+  &.completed.active { background: #00b894; color: #fff; border-color: #00b894; }
+}

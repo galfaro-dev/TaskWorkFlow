@@ -12,7 +12,7 @@ namespace TaskWorkFlow.Application.UseCases.CreateTask
             _taskRepository = taskRepository;
         }
 
-        public async Task<Guid> ExecuteAsync(string title, string description)
+        public async Task<TaskItem> ExecuteAsync(string title, string description)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title is required.");
@@ -27,7 +27,7 @@ namespace TaskWorkFlow.Application.UseCases.CreateTask
 
             await _taskRepository.AddAsync(task);
 
-            return task.Id;
+            return task;
         }
     }
 }

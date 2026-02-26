@@ -1,0 +1,61 @@
+<div class="container">
+  <h2>📋 Mis Tareas</h2>
+  <div class="toolbar">
+    <div class="filter-container">
+      <button class="btn-filter" (click)="loadAll()">Todas</button>
+      <button class="btn-filter pending"  (click)="filterBy(1)">Pendientes</button>
+      <button class="btn-filter progress" (click)="filterBy(2)">En Progreso</button>
+      <button class="btn-filter completed" (click)="filterBy(4)">Completadas</button>
+      <button class="btn-filter blocked" (click)="filterBy(3)">Bloqueadas</button>
+    </div>
+  
+</div>
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Estado</th>
+        <th>Fecha Creación</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (task of tasks(); track task.id) {
+        <tr>
+          <td>
+            <strong>{{ task.title }}</strong>
+            @if (task.description) {
+              <p class="desc">{{ task.description }}</p>
+            }
+          </td>
+          <td>
+            <span class="badge" [class]="'state-' + task.state">
+              {{ getStateName(task.state) }}
+            </span>
+          </td>
+          <td>{{ task.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <div class="actions-wrapper">
+              @if (task.state === TaskState.Pending) {
+                <button class="btn btn-start" (click)="onStartTask(task.id)">▶️ Iniciar</button>
+              }
+              @if (task.state === TaskState.InProgress) {
+                <button class="btn btn-complete" (click)="onCompleteTask(task.id)">✅ Completar</button>
+              }
+              @if (task.state !== TaskState.Completed && task.state !== TaskState.Blocked) {
+                <button class="btn btn-block" (click)="onBlockTask(task.id)">🚫 Bloquear</button>
+              }
+              @if (task.state === TaskState.Blocked) {
+                <button class="btn btn-unblock" (click)="onUnblockTask(task.id)">🔓 Desbloquear</button>
+              }
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4" class="empty-msg">No hay tareas disponibles.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

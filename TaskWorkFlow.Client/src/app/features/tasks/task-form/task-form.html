@@ -1,0 +1,27 @@
+<div class="form-card">
+  <h3>✨ Nueva Tarea</h3>
+  <form (submit)="onSubmit(); $event.preventDefault()">
+    <div class="input-group">
+      <input 
+        type="text" 
+        placeholder="¿Qué hay que hacer?" 
+        [ngModel]="title()" 
+        (ngModelChange)="title.set($event)"
+        name="title"
+        required>
+    </div>
+    <div class="input-group">
+      <textarea 
+        placeholder="Descripción (opcional)" 
+        [ngModel]="description()" 
+        (ngModelChange)="description.set($event)"
+        name="description"></textarea>
+    </div>
+    <button type="submit" [disabled]="!title()" class="btn-add">
+      ➕ Agregar Tarea
+    </button>
+  </form>
+</div>
+@if (showSuccess()) {
+  <div class="alert-success">¡Tarea guardada con éxito! ✅</div>
+}

@@ -51,15 +51,15 @@ namespace TaskWorkFlow.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateTaskRequest request)
         {
-            var taskId = await _createTaskUseCase.ExecuteAsync(
+            var task = await _createTaskUseCase.ExecuteAsync(
                 request.Title,
                 request.Description
             );
 
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = taskId },
-                null
+                new { id = task.Id },
+                task
             );
 
         }
