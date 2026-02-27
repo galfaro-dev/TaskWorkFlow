@@ -1,160 +1,59 @@
-Task Management API – ASP.NET Core
+🚀 Task Workflow - Full Stack Application
+Task Workflow es una solución integral para la gestión de tareas, diseñada bajo los principios de Clean Architecture en el backend y una interfaz reactiva moderna en Angular 21.
 
-REST API built with ASP.NET Core following Clean Architecture principles.
-The project models business rules inside the Domain layer and separates responsibilities across API, Application, Infrastructure, and Domain.
+🏗️ Architecture & Design
+Backend (.NET 8)
+La solución está estructurada en cuatro capas para garantizar mantenibilidad y escalabilidad:
 
+Domain: Entidades, excepciones de dominio y reglas de negocio core.
 
+Application: Casos de uso (UseCases), DTOs, mapeos y validación con FluentValidation.
 
-----Technologies
+Infrastructure: Persistencia con EF Core, repositorios y configuración de SQL Server.
 
--ASP.NET Core Web API
+API: Controladores REST, Middleware global de excepciones y documentación con Swagger.
 
--C#
+Frontend (Angular 21)
+Interfaz de usuario moderna que consume la API de forma eficiente:
 
--Entity Framework Core
+Signals & RxJS: Gestión de estado reactiva y manejo de flujos asíncronos.
 
--SQL Server
+Clean UI: Componentes modulares para la gestión visual del ciclo de vida de las tareas.
 
--Clean Architecture
+Typed Services: Integración total con los DTOs del backend mediante TypeScript.
 
--FluentValidation
+🛠️ Business Rules & Features
+Task Lifecycle
+Las tareas siguen un flujo estricto validado desde el Domain:
+Pending ➡️ InProgress ➡️ Completed | Blocked
 
--xUnit + Moq (Unit Testing)
+Key Features
+Commands: Crear, Iniciar, Completar y Bloquear/Desbloquear tareas.
 
-|------------Prerequisites-------|
+Advanced Queries: * Filtrado avanzado (Estado, Título).
 
-.NET 8.0 SDK 
+Paginación eficiente ejecutada a nivel de base de datos (Skip/Take).
 
-SQL Server
+Validation: Reglas de negocio estrictas (ej. Una tarea solo puede completarse si está InProgress).
 
-|----------- Architecture ----------------|
+🧪 Testing Strategy
+Calidad de código asegurada mediante Unit Testing con xUnit y Moq:
 
-![Architecture Diagram](TaskWorkflow.Domain/Assets/Diagram.png)
+Domain Tests: Validación de transiciones de estado y reglas de negocio.
 
-The solution is structured into four layers:
+Application Tests: Comportamiento de Casos de Uso, cálculos de paginación y validadores.
 
--Domain → Entities, business rules, exceptions
+🚀 Running the Project
+1. Backend Setup
+Configurar la cadena de conexión en appsettings.json.
 
--Application → UseCases, DTOs, validation
+Ejecutar migraciones: dotnet ef database update.
 
--Infrastructure → EF Core, repositories, SQL Server
+Iniciar API: dotnet run.
 
--API → Controllers, middleware, Swagger
+2. Frontend Setup (Angular)
+Navegar a la carpeta del cliente: cd TaskWorkflow.Client.
 
-This separation ensures maintainability, testability, and scalability.
+Instalar dependencias: npm install.
 
-|-------- Business Rules-------------------|
-
-Tasks follow a strict lifecycle:
-
--Pending
-
--InProgress
-
--Completed
-
--Blocked
-
-Rules enforced in the Domain:
-
-A task can only start if it is Pending.
-
-A task can only complete if it is InProgress.
-
-Invalid transitions throw domain exceptions.
-
-|--------- Features------------|
-Commands
-
--Create Task
-
--Start Task
-
--Complete Task
-
--Block / Unblock Task
-
--Queries
-
--Get Task by Id
-
--Get Tasks by State
-
--Get All Tasks (optional filters)
-
--Get Tasks with Pagination
-
-|----------Filtering & Pagination--------|
-
-Optional filters:
-
--GET /api/task?state=InProgress&title=api
-
-
-Pagination (database-level using Skip/Take):
-
--GET /api/task/paged?pageNumber=1&pageSize=10
-
-
-Efficient queries are executed directly in SQL Server.
-
-|-------Validation--------|
-
-Validation handled in Application layer using FluentValidation:
-
-Title required (max 200 characters)
-
-Description max 1000 characters
-
-PageNumber > 0
-
-PageSize within allowed limits
-
-|----------Exception Handling--------|
-
-Global middleware maps exceptions to proper HTTP status codes:
-
--400 → Invalid input
-
--404 → Not found
-
--409 → Business rule violation
-
--500 → Unexpected error
-
-|--------------Testing----------|
-
--Unit tests implemented using xUnit and Moq.
-
--Domain Tests
-
--State transitions (Start, Complete, Block, Unblock)
-
--Business rule validation
-
--Application Tests
-
--UseCase behavior
-
--DTO mapping
-
--Pagination calculation
-
--Validator behavior
-
-|-----------Running the Project--------|
-
-Configure connection string in appsettings.json
-
--Run migrations:
-
--dotnet ef database update
-
--Start the API:
-
--dotnet run
-
-
-Access Swagger:
-
-https://localhost:{port}/swagger
+Iniciar aplicación: ng serve.
