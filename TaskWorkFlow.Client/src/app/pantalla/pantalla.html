@@ -1,0 +1,28 @@
+<div class="task-card">
+  <h2 class="card-title">Agregar Nueva Tarea</h2>
+  
+  <form [formGroup]="taskForm" (ngSubmit)="submit()" class="task-form">
+    
+    <div class="form-group">
+      <input type="text" class="form-input" placeholder="Título de la tarea" formControlName="title" />
+      <div class="error-message" *ngIf="(taskForm.get('title')?.touched || isSubmitted) && taskForm.get('title')?.hasError('required')">
+        Obligatorio
+      </div>
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-input" placeholder="Descripción" formControlName="description" />
+      <div class="error-message" *ngIf="(taskForm.get('description')?.touched || isSubmitted) && taskForm.get('description')?.hasError('required')">
+        Obligatorio
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">
+      Añadir Tarea
+    </button>
+
+  </form>
+</div>
+@if (showSuccess()) {
+  <div class="alert-success">¡Tarea guardada con éxito! ✅</div>
+}

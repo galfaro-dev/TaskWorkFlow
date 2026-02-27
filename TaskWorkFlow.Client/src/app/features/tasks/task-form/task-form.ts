@@ -20,22 +20,23 @@ export class TaskForm {
 
   // features/tasks/task-form/task-form.component.ts
 
-onSubmit() {
-  const nuevaTarea = { title: this.title(), description: this.description() };
+  onSubmit() {
+    const nuevaTarea = { title: this.title(), description: this.description() };
 
 
-  // ✅ BIEN: El .subscribe() dispara la petición y el código del tap en el service
-  this.taskService.createTask(nuevaTarea).subscribe({
-    next: (tareaCreada) => {
-      this.title.set('');       // Limpiar campos
-      this.description.set('');
-      this.showSuccess.set(true); // Mostrar tu feedback visual
-    },
-    error: (err) => {
-      console.error('Error al crear la tarea:', err);
-    }
-  });
-}
+    // ✅ BIEN: El .subscribe() dispara la petición y el código del tap en el service
+    this.taskService.createTask(nuevaTarea).subscribe({
+      next: (tareaCreada) => {
+        this.title.set('');       // Limpiar campos
+        this.description.set('');
+        this.showSuccess.set(true); // Mostrar tu feedback visual
+        this.taskService.notifyTaskCreated();
+      },
+      error: (err) => {
+        console.error('Error al crear la tarea:', err);
+      }
+    });
+  }
 
 
   

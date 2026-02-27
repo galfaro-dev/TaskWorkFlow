@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { TaskResponseDto, TaskState } from '../Models/task.model';
 import { Observable, tap } from 'rxjs';
 import { PagedResultDto } from '../Models/paged-result.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,14 @@ export class TaskService {
   // Solo una declaración del almacén de datos (Signal)
   #tasks = signal<TaskResponseDto[]>([]);
   public tasks = this.#tasks.asReadonly();
+  
+  //Para notificar la actualizacion en la tabla de tasklist
+  private taskCreatedSource = new Subject<void>();
+  taskCreated$ = this.taskCreatedSource.asObservable(); // El "aviso" que escuchará la lista
+
+  notifyTaskCreated() {
+    this.taskCreatedSource.next();
+  }
 
   // --- LECTURA Y FILTROS ---
 
@@ -33,26 +42,20 @@ export class TaskService {
   // --- CREACIÓN ---
 
   createTask(dto: { title: string; description?: string }): Observable<TaskResponseDto> {
-  return this.http.post<TaskResponseDto>(this.apiUrl, dto).pipe(
-    tap((newTask) => {
-      if (newTask && newTask.id) { // Verificamos que no venga nulo
-        this.#tasks.update(current => [newTask, ...current]);
-        console.log('✅ Signal actualizado con:', newTask);
-      }
-    })
-  );
-}
-// --- Paginacion ---
-  getTasksPaged(pageNumber: number, pageSize: number): Observable<PagedResultDto<TaskResponseDto>> {
-  // Construye la URL con los parámetros que espera tu Backend
-  const url = `${this.apiUrl}/paged?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.http.post<TaskResponseDto>(this.apiUrl, dto); 
+    // Quitamos el .pipe(tap...) que hacía el unshift manual. 
+    // Ahora el componente llamará a notifyTaskCreated() y loadPage(1) hará el refresco limpio.
+  }
+//Pagination
+getTasksPaged(pageNumber: number, pageSize: number, state?: number): Observable<PagedResultDto<TaskResponseDto>> {
+    let url = `${this.apiUrl}/paged?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    if (state !== undefined) {
+      url += `&state=${state}`;
+    }
 
-  return this.http.get<PagedResultDto<TaskResponseDto>>(url).pipe(
-    tap(response => {
-      // Seteamos el signal #tasks con los items de la página actual
-      this.#tasks.set(response.items);
-    })
-  );
+    return this.http.get<PagedResultDto<TaskResponseDto>>(url).pipe(
+      tap(response => this.#tasks.set(response.items)) // Reemplazo total, mantiene la tabla en 5
+    );
   }
 
   // --- CAMBIOS DE ESTADO (REGLAS DE DOMINIO) ---

@@ -53,9 +53,13 @@ public class TaskRepository : ITaskRepository
             .ToListAsync();
     }
 
-    public async Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
+    public async Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize, TaskState? state=null)
     {
-        var query = _context.Tasks.AsNoTracking(); 
+        var query = _context.Tasks.AsNoTracking();
+
+        // Si mandan un estado, filtramos antes de contar y paginar
+        if (state.HasValue)
+            query = query.Where(t => t.State == state.Value);
 
         var totalCount = await query.CountAsync();
 

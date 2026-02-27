@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { TaskService } from './data/Services/task.service';// Asegúrate de que la ruta sea correcta
 import { TaskList } from './features/tasks/task-list/task-list';
 import { TaskForm } from './features/tasks/task-form/task-form';
+import { Pantalla } from './pantalla/pantalla';
 
 @Component({
   selector: 'app-root',
   standalone: true, // Aseguramos que sea standalone
-  imports: [RouterOutlet, TaskList,TaskForm],
+  imports: [RouterOutlet, TaskList,TaskForm,Pantalla],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

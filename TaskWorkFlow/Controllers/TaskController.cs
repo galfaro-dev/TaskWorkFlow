@@ -111,10 +111,10 @@ namespace TaskWorkFlow.Controllers
             return Ok(result);
         }
         [HttpGet("paged")]
-        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 5,[FromQuery] TaskState? state = null)
         {
             var result = await _getTasksPageUseCase
-                .ExecuteAsync(pageNumber, pageSize);
+                .ExecuteAsync(pageNumber, pageSize, state);
 
             return Ok(result);
         }

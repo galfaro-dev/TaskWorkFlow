@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaskWorkFlow.Application.DTOs.Common;
 using TaskWorkFlow.Application.DTOs.Tasks;
 using TaskWorkFlow.Application.Interfaces.Persistence;
+using TaskWorkFlow.Domain.Enums;
 
 namespace TaskWorkFlow.Application.UseCases.GetTasksPaged
 {
@@ -18,7 +19,7 @@ namespace TaskWorkFlow.Application.UseCases.GetTasksPaged
             _taskRepository = taskRepository;
         }
 
-        public async Task<PagedResultDto<TaskListItemDto>> ExecuteAsync(int pageNumber,int pageSize)
+        public async Task<PagedResultDto<TaskListItemDto>> ExecuteAsync(int pageNumber,int pageSize, TaskState? state = null)
         {
             if (pageNumber <= 0)
                 throw new ArgumentException("Page number must be greater than 0.");
@@ -27,7 +28,7 @@ namespace TaskWorkFlow.Application.UseCases.GetTasksPaged
                 throw new ArgumentException("Page size must be between 1 and 100.");
 
             var (items, totalCount) =
-                await _taskRepository.GetPagedAsync(pageNumber, pageSize);
+                await _taskRepository.GetPagedAsync(pageNumber, pageSize, state);
 
             var dtoItems = items.Select(t => new TaskListItemDto
             {

@@ -10,6 +10,6 @@ namespace TaskWorkFlow.Application.Interfaces.Persistence
         Task UpdateAsync(TaskItem task);
         Task<IReadOnlyList<TaskItem>> GetByStateAsync(TaskState state);
         Task<IReadOnlyList<TaskItem>> GetAllAsync(TaskState? state,string? title);
-        Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber,int pageSize);
+        Task<(IReadOnlyList<TaskItem> Items, int TotalCount)> GetPagedAsync(int pageNumber,int pageSize, TaskState? state );
     }
 }

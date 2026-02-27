@@ -12,7 +12,7 @@ import { TaskState } from '../../../data/Models/task.model';
 })
 export class TaskList implements OnInit {
   private taskService = inject(TaskService);
-  
+  currentFilter = signal<number | undefined>(undefined); // Para guardar el estado actual
   // Signals para la UI
   tasks = this.taskService.tasks;
   TaskState = TaskState;
@@ -26,18 +26,23 @@ export class TaskList implements OnInit {
   ngOnInit(): void {
     // Al iniciar, cargamos la página 1 en lugar de todas
     this.loadPage(1);
+    // Escuchamos cuando se crea una tarea para recargar la tabla de 5 en 5
+    this.taskService.taskCreated$.subscribe(() => {
+      this.loadPage(1); 
+    });
   }
 
   // --- NUEVOS MÉTODOS DE PAGINACIÓN ---
   loadPage(page: number): void {
-    if (page < 1 || (this.totalPages() > 0 && page > this.totalPages())) return;
+  if (page < 1 || (this.totalPages() > 0 && page > this.totalPages())) return;
 
-    this.taskService.getTasksPaged(page, this.pageSize).subscribe(res => {
-      this.currentPage.set(res.pageNumber);
-      this.totalPages.set(res.totalPages);
-      this.totalCount.set(res.totalCount);
-    });
-  }
+  // Pasamos el filtro actual al servicio
+  this.taskService.getTasksPaged(page, this.pageSize, this.currentFilter()).subscribe(res => {
+    this.currentPage.set(res.pageNumber);
+    this.totalPages.set(res.totalPages);
+    this.totalCount.set(res.totalCount);
+  });
+}
 
   nextPage() {
     this.loadPage(this.currentPage() + 1);
@@ -48,13 +53,16 @@ export class TaskList implements OnInit {
   }
 
   // --- TUS MÉTODOS EXISTENTES (MANTENIDOS) ---
-  loadAll() {
-    this.loadPage(1); // Mejor usar la paginación empezando en 1
-  }
+  // Actualiza tu método de filtrar
+filterBy(state: number) {
+  this.currentFilter.set(state); // Guardamos el filtro
+  this.loadPage(1); // Siempre volvemos a la página 1 al filtrar
+}
 
-  filterBy(state: number) {
-    this.taskService.getTasksByState(state).subscribe();
-  }
+loadAll() {
+  this.currentFilter.set(undefined); // Quitamos el filtro
+  this.loadPage(1);
+}
 
   getStateName(state: number): string {
     return TaskState[state] || 'Unknown';
