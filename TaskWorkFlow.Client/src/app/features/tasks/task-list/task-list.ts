@@ -1,48 +1,43 @@
-import { Component, inject, OnInit, signal } from '@angular/core'; // Añadido signal
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../../data/Services/task.service';
 import { TaskState } from '../../../data/Models/task.model';
 
 @Component({
   selector: 'app-task-list',
-  standalone: true, // Asegúrate de tener esto si usas imports directos
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss',
 })
 export class TaskList implements OnInit {
   private taskService = inject(TaskService);
-  currentFilter = signal<number | undefined>(undefined); // Para guardar el estado actual
-  // Signals para la UI
+  currentFilter = signal<number | undefined>(undefined);
+
   tasks = this.taskService.tasks;
   TaskState = TaskState;
 
-  // --- NUEVAS VARIABLES DE PAGINACIÓN ---
   currentPage = signal(1);
   totalPages = signal(0);
   totalCount = signal(0);
-  pageSize = 5; 
+  pageSize = 5;
 
   ngOnInit(): void {
-    // Al iniciar, cargamos la página 1 en lugar de todas
     this.loadPage(1);
-    // Escuchamos cuando se crea una tarea para recargar la tabla de 5 en 5
     this.taskService.taskCreated$.subscribe(() => {
-      this.loadPage(1); 
+      this.loadPage(1);
     });
   }
 
-  // --- NUEVOS MÉTODOS DE PAGINACIÓN ---
   loadPage(page: number): void {
-  if (page < 1 || (this.totalPages() > 0 && page > this.totalPages())) return;
+    if (page < 1 || (this.totalPages() > 0 && page > this.totalPages())) return;
 
-  // Pasamos el filtro actual al servicio
-  this.taskService.getTasksPaged(page, this.pageSize, this.currentFilter()).subscribe(res => {
-    this.currentPage.set(res.pageNumber);
-    this.totalPages.set(res.totalPages);
-    this.totalCount.set(res.totalCount);
-  });
-}
+    this.taskService.getTasksPaged(page, this.pageSize, this.currentFilter()).subscribe(res => {
+      this.currentPage.set(res.pageNumber);
+      this.totalPages.set(res.totalPages);
+      this.totalCount.set(res.totalCount);
+    });
+  }
 
   nextPage() {
     this.loadPage(this.currentPage() + 1);
@@ -52,24 +47,46 @@ export class TaskList implements OnInit {
     this.loadPage(this.currentPage() - 1);
   }
 
-  // --- TUS MÉTODOS EXISTENTES (MANTENIDOS) ---
-  // Actualiza tu método de filtrar
-filterBy(state: number) {
-  this.currentFilter.set(state); // Guardamos el filtro
-  this.loadPage(1); // Siempre volvemos a la página 1 al filtrar
-}
+  filterBy(state: number) {
+    this.currentFilter.set(state);
+    this.loadPage(1);
+  }
 
-loadAll() {
-  this.currentFilter.set(undefined); // Quitamos el filtro
-  this.loadPage(1);
-}
+  loadAll() {
+    this.currentFilter.set(undefined);
+    this.loadPage(1);
+  }
 
   getStateName(state: number): string {
     return TaskState[state] || 'Unknown';
   }
 
-  onStartTask(id: string) { this.taskService.start(id).subscribe(); }
-  onCompleteTask(id: string) { this.taskService.complete(id).subscribe(); }
-  onBlockTask(id: string) { this.taskService.block(id).subscribe(); }
-  onUnblockTask(id: string) { this.taskService.unblock(id).subscribe(); }
+  emptyRows(): unknown[] {
+    const diff = 5 - this.tasks().length;
+    return diff > 0 ? new Array(diff).fill(null) : [];
+  }
+
+  onStartTask(id: string) {
+  this.taskService.start(id).subscribe(() => {
+    this.loadPage(this.currentPage());
+  });
+}
+
+onCompleteTask(id: string) {
+  this.taskService.complete(id).subscribe(() => {
+    this.loadPage(this.currentPage());
+  });
+}
+
+onBlockTask(id: string) {
+  this.taskService.block(id).subscribe(() => {
+    this.loadPage(this.currentPage());
+  });
+}
+
+onUnblockTask(id: string) {
+  this.taskService.unblock(id).subscribe(() => {
+    this.loadPage(this.currentPage());
+  });
+}
 }

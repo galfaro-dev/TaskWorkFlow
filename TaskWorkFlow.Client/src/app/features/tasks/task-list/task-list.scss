@@ -1,171 +1,272 @@
-.task-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+/* task-list.component.scss */
 
-  th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  th { background-color: #512bd4; color: white; }
+.container {
+  font-family: 'Outfit', sans-serif;
 
-  .desc { font-size: 0.85rem; color: #666; margin: 0; }
-
-  .badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    
-    &.state-1 { background: #fdcb6e; color: #000; } // Pending
-    &.state-2 { background: #0984e3; color: #fff; } // InProgress
-    &.state-4 { background: #00b894; color: #fff; } // Completed
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
   }
 }
-// src/app/features/tasks/task-list/task-list.component.scss
 
-.task-table {
-  // ... (tus estilos anteriores)
-  
-  td {
-    strong {
-      display: block;
-      color: #2d3436;
-      font-size: 1.1rem;
-    }
-    
-    .desc {
-      margin-top: 4px;
-      color: #636e72;
-      font-size: 0.9rem;
-      font-style: italic;
-    }
-  }
-}
+// =============================================
+// Toolbar y filtros
+// =============================================
+
 .toolbar {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
 }
 
 .filter-container {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
   align-items: center;
-
-  .filter-label {
-    font-weight: 600;
-    color: #636e72;
-    margin-right: 10px;
-  }
 }
 
 .btn-filter {
-  padding: 8px 16px;
-  border: 1px solid #dfe6e9;
+  padding: 7px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  background: white;
+  background: rgba(255, 255, 255, 0.04);
   cursor: pointer;
-  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
   font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.2s;
 
-  &:hover { background: #f1f2f6; }
-  
-  &.active {
-    background: #512bd4;
-    color: white;
-    border-color: #512bd4;
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
-  &.pending.active { background: #fdcb6e; color: #000; border-color: #fdcb6e; }
-  &.progress.active { background: #0984e3; color: #fff; border-color: #0984e3; }
-  &.completed.active { background: #00b894; color: #fff; border-color: #00b894; }
-  /* task-list.scss */
-.container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  &.active {
+    background: rgba(81, 43, 212, 0.25);
+    color: #a78bfa;
+    border-color: rgba(81, 43, 212, 0.5);
+  }
+
+  &.pending.active   { background: rgba(251,191,36,0.15);  color: #fbbf24; border-color: rgba(251,191,36,0.35); }
+  &.progress.active  { background: rgba(59,130,246,0.15);  color: #60a5fa; border-color: rgba(59,130,246,0.35); }
+  &.completed.active { background: rgba(16,185,129,0.15);  color: #34d399; border-color: rgba(16,185,129,0.35); }
+  &.blocked.active   { background: rgba(239,68,68,0.15);   color: #f87171; border-color: rgba(239,68,68,0.35); }
 }
 
-/* Contenedor de la Paginación */
+// =============================================
+// Tabla
+// =============================================
+
+.table-wrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(81, 43, 212, 0.8), rgba(139, 92, 246, 0.6), transparent);
+  }
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  th:nth-child(1) { width: 38%; }
+  th:nth-child(2) { width: 18%; }
+  th:nth-child(3) { width: 22%; }
+  th:nth-child(4) { width: 22%; }
+
+  thead th {
+    background: rgba(81, 43, 212, 0.15);
+    color: rgba(255, 255, 255, 0.45);
+    padding: 14px 16px;
+    text-align: left;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    &.text-center { text-align: center; }
+  }
+
+  tbody tr {
+    transition: background 0.15s;
+
+    &:hover:not(.empty-row) {
+      background: rgba(255, 255, 255, 0.03);
+    }
+  }
+
+  td {
+    height: 64px;
+    padding: 0 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 14px;
+    font-family: 'Outfit', sans-serif;
+
+    strong {
+      display: block;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .desc {
+      margin-top: 2px;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:nth-child(3) {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  tr:last-child td { border-bottom: none; }
+}
+
+// =============================================
+// Filas vacías
+// =============================================
+
+.empty-row td {
+  height: 64px;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+// =============================================
+// Badges
+// =============================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &.state-1 { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+  &.state-2 { background: rgba(59,130,246,0.12);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+  &.state-3 { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  &.state-4 { background: rgba(16,185,129,0.12);  color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+}
+
+// =============================================
+// Botones de acción
+// =============================================
+
+.actions-wrapper {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 5px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.15s;
+
+  &:hover { transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+
+  &.btn-start    { background: rgba(59,130,246,0.12);  color: #60a5fa; border-color: rgba(59,130,246,0.25); &:hover { background: rgba(59,130,246,0.22); } }
+  &.btn-complete { background: rgba(16,185,129,0.12);  color: #34d399; border-color: rgba(16,185,129,0.25); &:hover { background: rgba(16,185,129,0.22); } }
+  &.btn-block    { background: rgba(239,68,68,0.1);    color: #f87171; border-color: rgba(239,68,68,0.2);   &:hover { background: rgba(239,68,68,0.2); } }
+  &.btn-unblock  { background: rgba(251,191,36,0.1);   color: #fbbf24; border-color: rgba(251,191,36,0.2);  &:hover { background: rgba(251,191,36,0.2); } }
+}
+
+// =============================================
+// Paginación
+// =============================================
+
 .pagination-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.15);
 
   .pagination-info {
-    color: #6c757d;
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .pagination-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
-
-    .btn-nav {
-      padding: 0.5rem 1rem;
-      border: 1px solid #007bff;
-      background-color: #fff;
-      color: #007bff;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
-
-      &:hover:not(:disabled) {
-        background-color: #007bff;
-        color: white;
-      }
-
-      &:disabled {
-        border-color: #ccc;
-        color: #ccc;
-        cursor: not-allowed;
-      }
-    }
+    gap: 12px;
 
     .page-number {
-      font-size: 0.95rem;
-      color: #333;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      strong { color: rgba(255, 255, 255, 0.85); }
     }
   }
 }
 
-/* Estilos extra para tu tabla si los necesitas */
-.task-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  min-height: 3rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  
-  th {
-    background-color: #f4f6f9;
-    padding: 12px;
-    text-align: left;
-    border-bottom: 2px solid #dee2e6;
+.btn-nav {
+  padding: 7px 16px;
+  border: 1px solid rgba(81, 43, 212, 0.35);
+  background: rgba(81, 43, 212, 0.1);
+  color: #a78bfa;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba(81, 43, 212, 0.25);
+    border-color: rgba(81, 43, 212, 0.6);
+    transform: translateY(-1px);
   }
 
-  td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
+  &:disabled {
+    border-color: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.2);
+    background: transparent;
+    cursor: not-allowed;
   }
-}
 }

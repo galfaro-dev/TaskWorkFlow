@@ -8,7 +8,7 @@ import { Pantalla } from './pantalla/pantalla';
 @Component({
   selector: 'app-root',
   standalone: true, // Aseguramos que sea standalone
-  imports: [RouterOutlet, TaskList,TaskForm,Pantalla],
+  imports: [RouterOutlet, TaskList,TaskForm],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
