@@ -11,20 +11,16 @@ import { TaskService } from '../../../data/Services/task.service';
 export class TaskForm {
 
   private taskService = inject(TaskService);
-  
-  // Signals para manejar el formulario de forma limpia
+
   title = signal('');
   description = signal('');
 
   showSuccess = signal(false);
 
-  // features/tasks/task-form/task-form.component.ts
 
   onSubmit() {
     const nuevaTarea = { title: this.title(), description: this.description() };
 
-
-    // ✅ BIEN: El .subscribe() dispara la petición y el código del tap en el service
     this.taskService.createTask(nuevaTarea).subscribe({
       next: (tareaCreada) => {
         this.title.set('');       // Limpiar campos

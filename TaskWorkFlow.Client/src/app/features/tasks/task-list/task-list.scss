@@ -1,4 +1,3 @@
-/* task-list.component.scss */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -17,9 +16,6 @@
   }
 }
 
-// =============================================
-// Toolbar y filtros
-// =============================================
 
 .toolbar {
   margin-bottom: 16px;
@@ -62,9 +58,6 @@
   &.blocked.active   { background: rgba(239,68,68,0.15);   color: #f87171; border-color: rgba(239,68,68,0.35); }
 }
 
-// =============================================
-// Tabla
-// =============================================
 
 .table-wrapper {
   background: rgba(255, 255, 255, 0.03);
@@ -154,9 +147,6 @@
   tr:last-child td { border-bottom: none; }
 }
 
-// =============================================
-// Filas vacías
-// =============================================
 
 .empty-row td {
   height: 64px;
@@ -164,9 +154,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-// =============================================
-// Badges
-// =============================================
 
 .badge {
   display: inline-flex;
@@ -183,10 +170,6 @@
   &.state-3 { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
   &.state-4 { background: rgba(16,185,129,0.12);  color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
 }
-
-// =============================================
-// Botones de acción
-// =============================================
 
 .actions-wrapper {
   display: flex;
@@ -213,10 +196,6 @@
   &.btn-block    { background: rgba(239,68,68,0.1);    color: #f87171; border-color: rgba(239,68,68,0.2);   &:hover { background: rgba(239,68,68,0.2); } }
   &.btn-unblock  { background: rgba(251,191,36,0.1);   color: #fbbf24; border-color: rgba(251,191,36,0.2);  &:hover { background: rgba(251,191,36,0.2); } }
 }
-
-// =============================================
-// Paginación
-// =============================================
 
 .pagination-container {
   display: flex;

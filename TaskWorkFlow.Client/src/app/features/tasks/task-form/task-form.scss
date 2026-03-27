@@ -1,4 +1,4 @@
-/* task-form.component.scss */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
@@ -41,7 +41,9 @@
 
 .input-group {
   input, textarea {
-    width: 100%;
+    display: block;
+    width: 95%;
+    min-width: 0;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
