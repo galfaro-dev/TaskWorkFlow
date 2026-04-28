@@ -35,6 +35,7 @@ public class ExceptionHandlingMiddleware
                 ex.Message
             );
         }
+
         catch (InvalidOperationException ex)
         {
             await HandleExceptionAsync(
