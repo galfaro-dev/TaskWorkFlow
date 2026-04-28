@@ -10,7 +10,7 @@ on:
 
 env:
   DOTNET_VERSION: '8.0.x'
-  DOCKER_IMAGE: galfaro-dev/taskworkflow-api
+  DOCKER_IMAGE: galfarodev/taskworkflow-api
 
 jobs:
   build-test-and-publish:
