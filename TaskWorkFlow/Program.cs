@@ -47,9 +47,18 @@ builder.Services.AddCors(options =>
 
 
 //DbContext
+// Localiza tu configuración de DbContext y déjala así:
 builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlServerOptionsAction: sqlOptions =>
+        {
+            // Esto es lo profesional: si falla, reintenta automáticamente
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 10,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        }
     ));
 
 //swagger
@@ -72,6 +81,25 @@ if (app.Environment.IsDevelopment())
 }
 //Middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+
+// BLOQUE PROFESIONAL DE MIGRACIONES
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<TaskDbContext>();
+        // Esto aplica las migraciones pendientes al iniciar el contenedor
+        context.Database.Migrate();
+        Console.WriteLine("--> Base de datos migrada con éxito.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"--> Error aplicando migraciones: {ex.Message}");
+    }
+}
+
 
 app.UseCors("AngularApp");
 
